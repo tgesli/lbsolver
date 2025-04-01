@@ -98,4 +98,10 @@ body {
 
 .text-center.mt-4 {
     margin-top: 2rem !important;
+}
+
+.copyright {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
 } 

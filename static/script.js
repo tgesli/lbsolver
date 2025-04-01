@@ -1,14 +1,34 @@
 document.addEventListener('DOMContentLoaded', function() {
     const solveBtn = document.getElementById('solveBtn');
+    const clearBtn = document.getElementById('clearBtn');
     const resultsDiv = document.getElementById('results');
     const solutionsList = document.getElementById('solutionsList');
     const letterInputs = document.querySelectorAll('.letter-input');
 
     console.log('DOM loaded, found elements:', {
         solveBtn: !!solveBtn,
+        clearBtn: !!clearBtn,
         resultsDiv: !!resultsDiv,
         solutionsList: !!solutionsList,
         letterInputs: letterInputs.length
+    });
+
+    // Focus on the first input field
+    letterInputs[0].focus();
+
+    // Handle clear button click
+    clearBtn.addEventListener('click', function() {
+        // Clear all input fields
+        letterInputs.forEach(input => {
+            input.value = '';
+        });
+        
+        // Clear solutions
+        solutionsList.innerHTML = '';
+        resultsDiv.classList.add('d-none');
+        
+        // Focus back on first input
+        letterInputs[0].focus();
     });
 
     // Handle input validation and auto-focus
@@ -27,6 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.preventDefault();
             }
         });
+
+        // Handle Enter key
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                solveBtn.click();
+            }
+        });
     });
 
     solveBtn.addEventListener('click', async function() {
@@ -38,8 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if all inputs are filled
         if (letters.some(letter => !letter)) {
-            console.log('Missing letters detected');
-            alert('Please fill in all letters');
+            console.log('Missing letters detected, ignoring solve request');
             return;
         }
 
